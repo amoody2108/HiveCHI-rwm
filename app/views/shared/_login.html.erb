@@ -1,18 +1,36 @@
-<%= form_for :session, url: '/login', html: {id: "login_form", data: { ajax: false } } do |f| %>
-  <% if flash[:error] %>
-  <div id = "login_error" class = "error-message">
-    <%= flash[:error] %>
-  </div>
+<div class="row">
+  <%= form_for :session, url: '/login', html: {:class => "col s12"} do |f| %>
+    <div class="row">
+      <% if flash[:error] %>
+        <div id = "login_error" class = "error-message">
+          <%= flash[:error] %>
+        </div>
+      <% end %>
+      <div class="input-field col s12">
+        <%= f.text_field :username, html: {id: "username", type: "text", :class => "validate"} %>
+        <%= f.label :username %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <%= f.password_field :password, html: {id: "password", type: "text", :class => "validate"} %>
+        <%= f.label :password %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 l4">
+        <%= f.submit(:class => "btn light-blue", :value => "login") %>
+      </div>
   <% end %>
-  <%= f.label :username %>
-  <%= f.text_field :username %>
-  <%= f.label :password %>
-  <%= f.password_field :password %>
-  <%= f.submit "Log in", :class => "button" %>
-<% end %>
-<%= link_to 'Register', register_path, class: 'centered', "data-role" => "button", "data-ajax" => "false" %>
-<%= form_for :session, url: '/login', html: {id: "login_form_example"} do |f| %>
-  <%= f.hidden_field :username, value: Student.first.username if Student.first %>
-  <%= f.hidden_field :password, value: "password1234" %>
-  <%= f.submit "Demo", class: "button" %>
-<% end %>
+      <div class="col s12 l4">
+        <%= link_to 'Register', register_path, :class => 'btn light-blue', "data-role" => "button", "data-ajax" => "false" %>
+      </div>
+      <div class="col s12 l4">
+        <%= form_for :session, url: '/login' do |f| %>
+          <%= f.hidden_field :username, value: Student.first.username if Student.first %>
+          <%= f.hidden_field :password, value: "password1234" %>
+          <%= f.submit "Demo", :class => "btn light-blue" %>
+        <% end %>
+      </div>
+    </div>
+</div>
