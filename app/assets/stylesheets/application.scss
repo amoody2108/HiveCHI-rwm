@@ -1,2 +1,4 @@
 @import "materialize/components/color";
+$primary-color: color("blue", "lighten-2") !default;
+$secondary-color: color("light-blue", "lighten-1") !default;
 @import 'materialize';
