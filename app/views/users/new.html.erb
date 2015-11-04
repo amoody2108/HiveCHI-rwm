@@ -1,10 +1,23 @@
-<div class="navbar-fixed">
-  <nav class="light-blue">
-    <div class="nav-wrapper">
-      <h4 class="center">Create an Account</h4>
-    </div><!-- /header -->
-  </nav>
-</div>
+<style>
+  body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  }
+  main{
+    flex: 1 0 auto;
+  }
+</style>
+<header>
+  <div class="navbar-fixed">
+    <nav class="light-blue">
+      <div class="nav-wrapper">
+        <h4 class="center">Create an Account</h4>
+      </div><!-- /header -->
+    </nav>
+  </div>
+</header>
+<main>
   <% if ENV["DISABLE_REGISTRATIONS"] == "TRUE" %>
     We’re sorry, but we have temporarily disabled registration for new users while we investigate an issue with the system. Please try registering again later.
   <% else %>
@@ -27,7 +40,7 @@
       </div>
     </div>
   <% end %>
-  <div data-role="footer" data-id="foo1" data-position="fixed">
-    <%= render "shared/navbar" %><!-- /navbar -->
-  </div><!-- /footer -->
-</div>
+</main>
+<footer class="page-footer grey lighten-1">
+  <%= render "shared/navbar" %><!-- /navbar -->
+</footer><!-- /footer -->
