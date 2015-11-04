@@ -13,3 +13,7 @@ function getTimeZone(){
   	tz = /\((\w{3})\)/.exec(s)[1]
   	return map[tz]
 }
+
+$(document).ready(function(){
+  $('ul.tabs').tabs();
+});
