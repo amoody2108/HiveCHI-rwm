@@ -13,7 +13,7 @@
         <li><%= link_to("Profile", edit_profile_path, "data-ajax" => "false", :class => "white-text center") %></li>
       </div>
       <div class="col s3">
-        <li><%= button_to("Logout", logout_path, :method => :delete, "data-ajax" => "false", :class => "white-text center") %></li>
+        <li><%= button_to("Logout", logout_path, :method => :delete, "data-ajax" => "false", :class => "btn-flat white-text center", style: "text-transform: capitalize;") %></li>
       </div>
       <% else %>
       <div class="col s3">

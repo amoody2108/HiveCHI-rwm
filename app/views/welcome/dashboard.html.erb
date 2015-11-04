@@ -5,86 +5,115 @@
     background-image: url(<%= asset_path 'login_background.jpg' %>);
     background-attachment: fixed;
   }
+  body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  }
+  main{
+    flex: 1 0 auto;
+  }
 </style>
-<div data-role="page" id="dashboard">
-  <div data-role="header">
-    <h1>Dashboard</h1>
+<header id="dashboard">
+  <div class="navbar-fixed">
+    <nav class="light-blue">
+      <div class="nav-wrapper">
+        <h4 class="center">Dashboard</h4>
+      </div>
+    </nav>
   </div><!-- /header -->
-  <% if flash[:notice] %>
-     <div id = "notice" class = "notice">
-      <%= flash[:notice] %>
-    </div>
-  <% end %>
-  <div data-role="collapsible-set">
-    <div data-role="collapsible" data-collapsed="true">
-      <h4>My Events</h4>
-        <ul data-role="listview">
-          <% now = DateTime.now().in_time_zone(@zone) %>
-          <% @user_events.each do |a| %>
-            <% if a.event.start_date_and_time.in_time_zone(@zone) < now %>
-              <li class = "attendance-now">
-            <% elsif a.event.start_date_and_time.in_time_zone(@zone).to_date == now.to_date %>
-              <li class = "attendance-today">
-            <% elsif a.event.start_date_and_time.in_time_zone(@zone).to_date == now.to_date+1.day %>
-              <li class = "attendance-tomorrow">
-            <% else %>
-                <li class = "attendance-future">
-            <% end %>
-              <%=link_to "#{a.event.name}: #{a.commitment_status}", a.event, data:{ajax: "false"} %></li>
-          <%end%>
-          <%= "You have no events"  unless @user_events.length > 0 %>
-      </ul>
-    </div>
-
-
-    <% unless session[:is_parent?] %>
-    <div data-role="collapsible" data-collapsed="true">
-      <h4>My Nudges</h4>
-        <ul data-role="listview">
-    <div data-role="collapsible" data-collapsed="false" id = "incoming_nudges">
-      <h4>Incoming Nudges (<%=@nudges_in.length%>)</h4>
-      <ul data-role="listview">
-      <% @nudges_in.each do |n| %>
-      <li>
-        <%=link_to "#{n.nudger.username} wants to go to #{n.event.name} with you", n.event, data: {ajax: "false"}%>
-      </li>
-      <%end%>
-    </div>
-    <div data-role="collapsible" data-collapsed="false" id = "outgoing_nudges">
-      <h4>Outgoing Nudges (<%=@nudges_out.length%>)</h4>
-      <ul data-role="listview">
-      <% @nudges_out.each do |n| %>
-      <li>
-        <%=link_to "You want to go to #{n.event.name} with #{n.nudgee.username}",  n.event, data: {ajax: "false"}%>
-      </li>
-      <%end%>
-    </ul>
-    </div>
-    </div>
+</header>
+<main>
+  <div class="container white">
+    <% if flash[:notice] %>
+       <div id = "notice" class = "notice">
+        <%= flash[:notice] %>
+      </div>
     <% end %>
+    <ul class="collapsible" data-collapsible="accordion">
+      <li>
+        <div class="collapsible-header">My Events</div>
+        <div class="collapsible-body">
+          <ul class="collection">
+            <% now = DateTime.now().in_time_zone(@zone) %>
+            <% @user_events.each do |a| %>
+              <% if a.event.start_date_and_time.in_time_zone(@zone) < now %>
+                <li class = "attendance-now collection-item">
+              <% elsif a.event.start_date_and_time.in_time_zone(@zone).to_date == now.to_date %>
+                <li class = "attendance-today collection-item">
+              <% elsif a.event.start_date_and_time.in_time_zone(@zone).to_date == now.to_date+1.day %>
+                <li class = "attendance-tomorrow collection-item">
+              <% else %>
+                  <li class = "attendance-future collection-item">
+              <% end %>
+                <%=link_to "#{a.event.name}: #{a.commitment_status}", a.event, data:{ajax: "false"} %></li>
+            <%end%>
+            <li class="collection-item"><%= "You have no events"  unless @user_events.length > 0 %></li>
+          </ul>
+        </div>
+      </li>
 
 
-    <div data-role="collapsible" data-collapsed="true">
-      <h4>Trending</h4>
-      <ul data-role="listview">
-        <% @trending_events.each do |event| %>
-          <li><%= link_to "#{event.name}: #{pluralize(event.attendees.count, 'person')} going", event, data: {ajax: "false"} %></li>
-        <% end %>
-      </ul>
-    </div>
+      <% unless session[:is_parent?] %>
+      <li>
+        <div class="collapsible-header">My Nudges</div>
+        <div class="collapsible-body">
+          <ul class="collapsible" data-collapsible="accordion">
+            <li>
+              <div class="collapsible-header">Incoming Nudges (<%=@nudges_in.length%>)</div>
+              <div class="collapsible-body">
+                <ul class="collection">
+                  <% @nudges_in.each do |n| %>
+                    <li class="collection-item">
+                      <%=link_to "#{n.nudger.username} wants to go to #{n.event.name} with you", n.event, data: {ajax: "false"}%>
+                    </li>
+                  <%end%>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <div class="collapsible-header">Outgoing Nudges (<%=@nudges_out.length%>)</div>
+              <div class="collapsible-body">
+                <ul class="collection">
+                  <% @nudges_out.each do |n| %>
+                    <li class="collection">
+                      <%=link_to "You want to go to #{n.event.name} with #{n.nudgee.username}",  n.event, data: {ajax: "false"}%>
+                    </li>
+                  <%end%>
+                </ul>
+              </div>
+            </li>
+          <% end %>
+        </div>
+      </li>
 
-    <div data-role="collapsible" data-collapsed="true">
-      <h4>Find Events</h4>
-      <ul data-role="listview">
-        <li><%= link_to "Today", events_path(start_time: Date.today.in_time_zone(get_time_zone)), data: {ajax: "false"} %></li>
-        <li><%= link_to "Tomorrow", events_path(start_time: Date.tomorrow.in_time_zone(get_time_zone)), data: {ajax: "false"} %></li>
-        <li><%= link_to "This Week", events_path(start_time: Date.today.in_time_zone(get_time_zone), end_time: Date.today.in_time_zone(get_time_zone) + 6.days), data: {ajax: "false"} %></li>
-      </ul>
-    </div>
+      <li>
+        <div class="collapsible-header">Trending</div>
+        <div class="collapsible-body">
+          <ul class="collection">
+            <% @trending_events.each do |event| %>
+              <li class="collection-item">
+                <%= link_to "#{event.name}: #{pluralize(event.attendees.count, 'person')} going", event, data: {ajax: "false"} %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </li>
 
-
-  <div data-role="footer" data-id="foo1" data-position="fixed">
-    <%= render "shared/navbar" %>
+      <li>
+        <div class="collapsible-header">Find Events</div>
+        <div class="collapsible-body">
+          <ul class="collection">
+            <li class="collection-item"><%= link_to "Today", events_path(start_time: Date.today.in_time_zone(get_time_zone)), data: {ajax: "false"} %></li>
+            <li class="collection-item"><%= link_to "Tomorrow", events_path(start_time: Date.tomorrow.in_time_zone(get_time_zone)), data: {ajax: "false"} %></li>
+            <li class="collection-item"><%= link_to "This Week", events_path(start_time: Date.today.in_time_zone(get_time_zone), end_time: Date.today.in_time_zone(get_time_zone) + 6.days), data: {ajax: "false"} %></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
   </div>
+</main>
 
-</div><!-- /page -->
+<footer class="page-footer grey lighten-1">
+  <%= render "shared/navbar" %>
+</div>
